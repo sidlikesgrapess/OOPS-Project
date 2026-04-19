@@ -1,6 +1,5 @@
 package com.smartbuilding;
 
-import com.smartbuilding.model.*;
 import com.smartbuilding.service.BuildingManager;
 import com.smartbuilding.exception.*;
 

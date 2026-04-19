@@ -3,7 +3,6 @@ package com.smartbuilding.util;
 import com.smartbuilding.exception.FileOperationException;
 import com.smartbuilding.model.*;
 import com.smartbuilding.service.AlertSystem;
-import com.smartbuilding.service.ReportGenerator;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -44,7 +43,20 @@ public class FileHandler {
     public void loadBuildingData() throws FileOperationException {
         String filename = dataDirectory + "/building_data.ser";
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            List<String> data = (List<String>) ois.readObject();
+            Object loadedObject = ois.readObject();
+            List<String> data = new ArrayList<>();
+
+            if (loadedObject instanceof List<?>) {
+                for (Object item : (List<?>) loadedObject) {
+                    if (!(item instanceof String)) {
+                        throw new IOException("Invalid data format in serialized file");
+                    }
+                    data.add((String) item);
+                }
+            } else {
+                throw new IOException("Invalid data format in serialized file");
+            }
+
             System.out.println("Building data loaded from: " + filename);
             for (String line : data) {
                 System.out.println("  " + line);

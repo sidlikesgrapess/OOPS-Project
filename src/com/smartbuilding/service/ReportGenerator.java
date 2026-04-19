@@ -95,6 +95,8 @@ public class ReportGenerator {
         double overallUtilization = totalCapacity > 0 ? (double) totalOccupied / totalCapacity * 100 : 0;
         report.append("\nTotal Occupancy: ").append(totalOccupied).append("/").append(totalCapacity);
         report.append(" (").append(String.format("%.1f", overallUtilization)).append("%)\n");
+        report.append("\nOccupancy Monitor Analytics:\n");
+        report.append(occupancyMonitor.generateOccupancyReport());
 
         return report.toString();
     }
