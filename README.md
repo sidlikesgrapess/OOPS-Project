@@ -25,21 +25,21 @@ E:\OOPS\OOPS Project\
 
 ## Deliverables Checklist
 
-✅ **1. Word Document** - PROJECT_DOCUMENTATION.md
+ **1. Word Document** - PROJECT_DOCUMENTATION.md
    - Comprehensive project explanation
    - UML diagram description (class relationships)
    - Feature details
    - OOPS principles mapping
 
-✅ **2. Code Appended to Word Doc** - FULL_PROJECT_REPORT.md (or separate .java files)
+ **2. Code Appended to Word Doc** - FULL_PROJECT_REPORT.md (or separate .java files)
    - Complete source code of all 24 Java files included
 
-✅ **3. .Java Files** - All source files in `src/` directory
+ **3. .Java Files** - All source files in `src/` directory
    - 24 Java files organized in packages
 
-✅ **4. PPT** - Optional (not provided; can be created from documentation)
+ **4. PPT** - Optional (not provided; can be created from documentation)
 
-✅ **5. Rubrics Table** - RUBRICS.md
+ **5. Rubrics Table** - RUBRICS.md
    - Detailed table showing usage of all 12 required components
    - Count and specific examples for each
 
@@ -47,18 +47,18 @@ E:\OOPS\OOPS Project\
 
 | Requirement | Status | Count/Details |
 |-------------|--------|---------------|
-| Classes (≥4) | ✅ | 18+ |
-| Nested Classes (≥1) | ✅ | 7 |
-| Abstract Class (≥1) | ✅ | 1 (BuildingComponent) |
-| Interface (≥1) | ✅ | 1 (AlertListener) |
-| Hierarchical Inheritance (≥1) | ✅ | User → 4 subclasses |
-| Package | ✅ | com.smartbuilding + subpackages |
-| Exception Handling (≥3 cases) | ✅ | 4+ custom exceptions |
-| I/O (File, Scanner) | ✅ | FileHandler with multiple streams |
-| Overloaded Methods (≥3) | ✅ | 15+ |
-| Overloaded Constructors (≥2) | ✅ | 15+ |
-| Vararg Overloading (≥1) | ✅ | 5 methods |
-| Wrapper Classes | ✅ | Used throughout |
+| Classes (≥4) |  | 18+ |
+| Nested Classes (≥1) |  | 7 |
+| Abstract Class (≥1) |  | 1 (BuildingComponent) |
+| Interface (≥1) |  | 1 (AlertListener) |
+| Hierarchical Inheritance (≥1) |  | User → 4 subclasses |
+| Package |  | com.smartbuilding + subpackages |
+| Exception Handling (≥3 cases) |  | 4+ custom exceptions |
+| I/O (File, Scanner) |  | FileHandler with multiple streams |
+| Overloaded Methods (≥3) |  | 15+ |
+| Overloaded Constructors (≥2) |  | 15+ |
+| Vararg Overloading (≥1) |  | 5 methods |
+| Wrapper Classes |  | Used throughout |
 
 ## How to Compile
 
