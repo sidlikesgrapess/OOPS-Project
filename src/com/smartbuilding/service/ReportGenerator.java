@@ -128,11 +128,12 @@ public class ReportGenerator {
             for (Room room : floor.getRooms()) {
                 for (Equipment eq : room.getEquipmentList()) {
                     String type = eq.getEquipmentType();
-                    operationalCount.put(type, operationalCount.getOrDefault(type, 0) + 1);
                     if (eq.getStatus().equals("MAINTENANCE")) {
                         maintenanceCount.put(type, maintenanceCount.getOrDefault(type, 0) + 1);
                     } else if (eq.getStatus().equals("MALFUNCTIONING")) {
                         malfunctionCount.put(type, malfunctionCount.getOrDefault(type, 0) + 1);
+                    } else {
+                        operationalCount.put(type, operationalCount.getOrDefault(type, 0) + 1);
                     }
                 }
             }

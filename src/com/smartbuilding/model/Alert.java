@@ -1,12 +1,13 @@
 package com.smartbuilding.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * Alert class represents system alerts and notifications.
  * Part of the alert management system.
  */
-public class Alert {
+public class Alert implements Serializable {
     private String alertId;
     private String alertType;
     private String message;

@@ -133,6 +133,9 @@ public class BuildingManager {
 
     public void logout() {
         if (currentUser != null) {
+            if (currentUser instanceof AlertListener) {
+                alertSystem.removeListener((AlertListener) currentUser);
+            }
             currentUser.logout();
             currentUser = null;
         }
@@ -268,7 +271,22 @@ public class BuildingManager {
 
     public void loadData() throws FileOperationException {
         System.out.println("\nLoading system data...");
-        fileHandler.loadBuildingData();
+        FileHandler.SavedState loaded = fileHandler.loadBuildingData();
+        if (loaded != null) {
+            this.building = loaded.getBuilding();
+            this.alertSystem = new AlertSystem();
+            this.alertSystem.setAlerts(loaded.getActiveAlerts(), loaded.getResolvedAlerts());
+            if (currentUser instanceof AlertListener) {
+                this.alertSystem.addListener((AlertListener) currentUser);
+            }
+            this.reportGenerator = new ReportGenerator(
+                building,
+                building.getSecuritySystem(),
+                building.getOccupancyMonitor(),
+                building.getLightingSystem()
+            );
+            System.out.println("System state restored successfully.");
+        }
     }
 
     public void runInteractiveMenu() {
@@ -292,10 +310,7 @@ public class BuildingManager {
             System.out.println("12. Save Data");
             System.out.println("13. Load Data");
             System.out.println("14. Exit");
-            System.out.print("\nEnter choice: ");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            int choice = readIntInput("\nEnter choice: ");
 
             try {
                 switch (choice) {
@@ -348,11 +363,36 @@ public class BuildingManager {
                         System.out.println("Invalid choice!");
                 }
             } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-                fileHandler.logEvent("ERROR", e.getMessage());
+                String message = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+                System.out.println("Error: " + message);
+                fileHandler.logEvent("ERROR", message);
             }
         }
         scanner.close();
+    }
+
+    private int readIntInput(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine();
+            try {
+                return Integer.parseInt(input.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a whole number.");
+            }
+        }
+    }
+
+    private double readDoubleInput(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine();
+            try {
+                return Double.parseDouble(input.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid decimal number.");
+            }
+        }
     }
 
     private void handleLogin() throws Exception {
@@ -374,9 +414,7 @@ public class BuildingManager {
         }
         System.out.print("Room name: ");
         String name = scanner.nextLine();
-        System.out.print("Capacity: ");
-        int capacity = scanner.nextInt();
-        scanner.nextLine();
+        int capacity = readIntInput("Capacity: ");
         addRoom(name, capacity);
     }
 
@@ -400,9 +438,7 @@ public class BuildingManager {
         String eqName = scanner.nextLine();
         System.out.print("Equipment type: ");
         String eqType = scanner.nextLine();
-        System.out.print("Energy consumption (kWh): ");
-        double energy = scanner.nextDouble();
-        scanner.nextLine();
+        double energy = readDoubleInput("Energy consumption (kWh): ");
 
         addEquipment(roomId, eqName, eqType, energy);
     }
@@ -424,9 +460,7 @@ public class BuildingManager {
 
         System.out.print("Enter Room ID or Name or Index: ");
         String roomId = scanner.nextLine();
-        System.out.print("New occupancy count: ");
-        int count = scanner.nextInt();
-        scanner.nextLine();
+        int count = readIntInput("New occupancy count: ");
 
         updateOccupancy(roomId, count);
     }
@@ -441,9 +475,7 @@ public class BuildingManager {
         System.out.println("2. ENERGY_OVERUSE");
         System.out.println("3. SECURITY_BREACH");
         System.out.println("4. MAINTENANCE_REMINDER");
-        System.out.print("Select type (1-4): ");
-        int type = scanner.nextInt();
-        scanner.nextLine();
+        int type = readIntInput("Select type (1-4): ");
 
         System.out.print("Message: ");
         String message = scanner.nextLine();
@@ -474,9 +506,7 @@ public class BuildingManager {
         System.out.println("4. Security");
         System.out.println("5. Lighting");
         System.out.println("6. Combined (multiple)");
-        System.out.print("Select type (1-6): ");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        int choice = readIntInput("Select type (1-6): ");
 
         switch (choice) {
             case 1:
@@ -531,9 +561,7 @@ public class BuildingManager {
         System.out.println("1. Turn all lights ON");
         System.out.println("2. Turn all lights OFF");
         System.out.println("3. View lighting status");
-        System.out.print("Select: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        int choice = readIntInput("Select: ");
 
         LightingSystem lighting = building.getLightingSystem();
         switch (choice) {
@@ -568,9 +596,7 @@ public class BuildingManager {
         System.out.println("3. Trigger Alarm");
         System.out.println("4. View Incidents");
         System.out.println("5. View Active Alarms");
-        System.out.print("Select: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        int choice = readIntInput("Select: ");
 
         switch (choice) {
             case 1:

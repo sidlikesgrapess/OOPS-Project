@@ -1,5 +1,6 @@
 package com.smartbuilding.model;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class LightingSystem extends BuildingComponent {
     }
 
     // Nested non-static class - Light
-    public class Light {
+    public class Light implements Serializable {
         private String lightId;
         private String location;
         private boolean isOn;

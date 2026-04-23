@@ -81,8 +81,33 @@ public class AlertSystem {
     }
 
     public void addListener(AlertListener listener) {
+        if (listener == null) {
+            return;
+        }
+        for (AlertListener existing : listeners) {
+            if (existing == listener) {
+                return;
+            }
+            if (existing instanceof User && listener instanceof User) {
+                User existingUser = (User) existing;
+                User newUser = (User) listener;
+                if (existingUser.getUsername().equals(newUser.getUsername()) &&
+                    existingUser.getRole().equals(newUser.getRole())) {
+                    return;
+                }
+            }
+        }
         listeners.add(listener);
         System.out.println("New listener added: " + listener.getClass().getSimpleName());
+    }
+
+    public void removeListener(AlertListener listener) {
+        listeners.remove(listener);
+    }
+
+    public void setAlerts(List<Alert> activeAlerts, List<Alert> resolvedAlerts) {
+        this.activeAlerts = activeAlerts != null ? new ArrayList<>(activeAlerts) : new ArrayList<>();
+        this.resolvedAlerts = resolvedAlerts != null ? new ArrayList<>(resolvedAlerts) : new ArrayList<>();
     }
 
     // Overloaded method for sending equipment failure alert

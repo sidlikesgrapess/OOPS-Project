@@ -1,10 +1,12 @@
 package com.smartbuilding.model;
 
+import java.io.Serializable;
+
 /**
  * Abstract base class for all building components.
  * Demonstrates abstraction principle - cannot be instantiated directly.
  */
-public abstract class BuildingComponent {
+public abstract class BuildingComponent implements Serializable {
     protected String componentId;
     protected String name;
     protected String location;

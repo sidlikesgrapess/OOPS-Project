@@ -55,7 +55,9 @@ public class Building extends BuildingComponent {
     public int getTotalEquipmentCount() {
         int total = 0;
         for (Floor floor : floors) {
-            total += floor.getRoomCount();
+            for (Room room : floor.getRooms()) {
+                total += room.getEquipmentCount();
+            }
         }
         return total;
     }

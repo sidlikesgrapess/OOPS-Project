@@ -1,5 +1,6 @@
 package com.smartbuilding.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
@@ -14,7 +15,7 @@ public class Equipment extends BuildingComponent {
     private LocalDate nextMaintenanceDate;
 
     // Nested static class for equipment specifications
-    public static class EquipmentSpecs {
+    public static class EquipmentSpecs implements Serializable {
         private String modelNumber;
         private String manufacturer;
         private double powerRating;

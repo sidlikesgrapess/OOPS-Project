@@ -1,5 +1,6 @@
 package com.smartbuilding.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class SecuritySystem extends BuildingComponent {
     private boolean surveillanceActive;
 
     // Nested static class - AccessLog
-    public static class AccessLog {
+    public static class AccessLog implements Serializable {
         private String logId;
         private String userId;
         private String location;
@@ -48,7 +49,7 @@ public class SecuritySystem extends BuildingComponent {
     }
 
     // Nested static class - Incident
-    public static class Incident {
+    public static class Incident implements Serializable {
         private String incidentId;
         private String type;
         private String description;
@@ -86,7 +87,7 @@ public class SecuritySystem extends BuildingComponent {
     }
 
     // Nested static class - Alarm
-    public static class Alarm {
+    public static class Alarm implements Serializable {
         private String alarmId;
         private String alarmType;
         private LocalDateTime triggeredTime;

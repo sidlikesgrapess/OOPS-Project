@@ -1,5 +1,6 @@
 package com.smartbuilding.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class OccupancyMonitor extends BuildingComponent {
     private LocalTime peakEndTime;
 
     // Nested class - OccupancyRecord
-    public class OccupancyRecord {
+    public class OccupancyRecord implements Serializable {
         private String roomId;
         private LocalDate date;
         private LocalTime time;

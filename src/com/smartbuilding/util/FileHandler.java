@@ -17,6 +17,22 @@ import java.util.Scanner;
 public class FileHandler {
     private String dataDirectory;
 
+    public static class SavedState implements Serializable {
+        private final Building building;
+        private final List<Alert> activeAlerts;
+        private final List<Alert> resolvedAlerts;
+
+        public SavedState(Building building, List<Alert> activeAlerts, List<Alert> resolvedAlerts) {
+            this.building = building;
+            this.activeAlerts = activeAlerts != null ? new ArrayList<>(activeAlerts) : new ArrayList<>();
+            this.resolvedAlerts = resolvedAlerts != null ? new ArrayList<>(resolvedAlerts) : new ArrayList<>();
+        }
+
+        public Building getBuilding() { return building; }
+        public List<Alert> getActiveAlerts() { return new ArrayList<>(activeAlerts); }
+        public List<Alert> getResolvedAlerts() { return new ArrayList<>(resolvedAlerts); }
+    }
+
     public FileHandler(String dataDirectory) {
         this.dataDirectory = dataDirectory;
         File dir = new File(dataDirectory);
@@ -28,29 +44,46 @@ public class FileHandler {
     public void saveBuildingData(Building building, AlertSystem alertSystem) throws FileOperationException {
         String filename = dataDirectory + "/building_data.ser";
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
-            // Note: In a real implementation, all model classes would implement Serializable
-            // For demonstration, we're saving simple string representations
-            List<String> data = new ArrayList<>();
-            data.add(building.toString());
-            data.add("Floors: " + building.getFloors().size());
-            data.add("Alerts: " + alertSystem.getActiveAlertCount());
-            oos.writeObject(data);
+            SavedState snapshot = new SavedState(
+                building,
+                alertSystem.getActiveAlerts(),
+                alertSystem.getResolvedAlerts()
+            );
+            oos.writeObject(snapshot);
             System.out.println("Building data saved to: " + filename);
         } catch (IOException e) {
             throw new FileOperationException(filename, "SAVE");
         }
     }
 
-    public void loadBuildingData() throws FileOperationException {
+    public SavedState loadBuildingData() throws FileOperationException {
         String filename = dataDirectory + "/building_data.ser";
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            List<String> data = (List<String>) ois.readObject();
-            System.out.println("Building data loaded from: " + filename);
-            for (String line : data) {
-                System.out.println("  " + line);
+            Object loaded = ois.readObject();
+            if (loaded instanceof SavedState) {
+                SavedState snapshot = (SavedState) loaded;
+                System.out.println("Building data loaded from: " + filename);
+                System.out.println("  " + snapshot.getBuilding());
+                System.out.println("  Floors: " + snapshot.getBuilding().getFloors().size());
+                System.out.println("  Alerts: " + snapshot.getActiveAlerts().size());
+                return snapshot;
             }
+
+            // Backward compatibility with older list-based snapshot format
+            if (loaded instanceof List) {
+                @SuppressWarnings("unchecked")
+                List<String> data = (List<String>) loaded;
+                System.out.println("Legacy data loaded from: " + filename);
+                for (String line : data) {
+                    System.out.println("  " + line);
+                }
+                return null;
+            }
+
+            return null;
         } catch (FileNotFoundException e) {
             System.out.println("No saved data found. Starting fresh.");
+            return null;
         } catch (IOException | ClassNotFoundException e) {
             throw new FileOperationException(filename, "LOAD");
         }
