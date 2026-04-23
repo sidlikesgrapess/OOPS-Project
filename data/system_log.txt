@@ -1,0 +1,8 @@
+[2026-04-23T21:29:25.877050800] [SYSTEM] User admin saved data
+[2026-04-23T21:30:23.667660700] [ERROR] Invalid credentials for user: wronguser
+[2026-04-23T21:30:59.241611900] [ERROR] User user is not authorized to perform: Add Room - Administrator access required
+[2026-04-23T21:31:15.457133700] [ERROR] Trigger Alert - Login required
+[2026-04-23T21:31:51.058883800] [ERROR] User user is not authorized to perform: Security Operations - Security staff or Administrator access required
+[2026-04-23T21:32:21.366930900] [ERROR] Equipment with ID INVALID_ROOM_999 not found
+[2026-04-23T21:37:15.081696700] [ERROR] null
+[2026-04-23T21:38:10.085114800] [SYSTEM] User admin saved data
